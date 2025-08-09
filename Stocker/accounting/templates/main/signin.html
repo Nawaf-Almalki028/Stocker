@@ -1,0 +1,58 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="container mt-5 mb-5" style="max-width: 600px;">
+  <div class="card shadow-lg border-0">
+    <div class="card-header bg-secondary text-center text-white py-3 rounded-top-1">
+      <h2 class="mb-0">Sign In</h2>
+    </div>
+    <div class="card-body p-4 p-md-5">
+      <form>
+        <div class="mb-4">
+          <label for="username" class="form-label fw-semibold">Username</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-person-fill"></i>
+            </span>
+            <input type="text" class="form-control py-2" id="username" name="username" placeholder="Enter your username"
+              required />
+          </div>
+          <div class="form-text mt-1">Use the username you registered with</div>
+        </div>
+        
+        <div class="mb-4">
+          <label for="password" class="form-label fw-semibold">Password</label>
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="bi bi-lock-fill"></i>
+            </span>
+            <input type="password" class="form-control py-2" id="password" name="password"
+            placeholder="Enter your password" required />
+            <button class="btn btn-outline-secondary toggle-password" type="button">
+              <i class="bi bi-eye-fill"></i>
+            </button>
+          </div>
+          <div class="form-text mt-1">Use the username you registered with</div>
+        </div>
+        <hr>
+        <div class="form-text mt-1 text-center mb-3">Complete the requirements</div>
+        
+        <div class="d-grid mb-3">
+          <button type="submit" class="btn btn-danger py-2 fw-semibold">
+            Sign In
+          </button>
+        </div>
+
+        <div class="text-center pt-3 border-top">
+          <a href="#forgot-password" class="text-decoration-none small">Forgot password?</a>
+          <p class="small mb-0">Don't have an account?
+            <a href="{% url 'accounting:accounting_signup_page' %}" class="text-decoration-none fw-semibold">Sign up</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

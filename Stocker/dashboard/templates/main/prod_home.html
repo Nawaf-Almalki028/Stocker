@@ -1,0 +1,228 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+<div class="container-fluid py-4">
+
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-stat border-primary h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold">Total Products</h6>
+                            <h2 class="fw-bold mt-2 mb-0">248</h2>
+                            <p class="text-muted mb-0 small">+12% from last month</p>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle align-self-center">
+                            <i class="bi bi-box-seam fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-stat border-warning h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold">Low Stock</h6>
+                            <h2 class="fw-bold mt-2 mb-0">18</h2>
+                            <p class="text-muted mb-0 small">Need restocking</p>
+                        </div>
+                        <div class="bg-warning bg-opacity-10 p-3 rounded-circle align-self-center">
+                            <i class="bi bi-exclamation-triangle fs-4 text-warning"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-stat border-danger h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold">Out of Stock</h6>
+                            <h2 class="fw-bold mt-2 mb-0">7</h2>
+                            <p class="text-muted mb-0 small">Urgent attention</p>
+                        </div>
+                        <div class="bg-danger bg-opacity-10 p-3 rounded-circle align-self-center">
+                            <i class="bi bi-x-circle fs-4 text-danger"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
+            <div class="card card-stat border-success h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold">Top Category</h6>
+                            <h2 class="fw-bold mt-2 mb-0">Electronics</h2>
+                            <p class="text-muted mb-0 small">42% of sales</p>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle align-self-center">
+                            <i class="bi bi-trophy fs-4 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Products</h5>
+                        <div class="dropdown">
+                            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button"
+                                id="filterDropdown" data-bs-toggle="dropdown">
+                                <i class="bi bi-filter me-1"></i>Filter
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#">All Products</a></li>
+                                <li><a class="dropdown-item" href="#">In Stock</a></li>
+                                <li><a class="dropdown-item" href="#">Low Stock</a></li>
+                                <li><a class="dropdown-item" href="#">Out of Stock</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead>
+                                <tr class="table-light">
+                                    <th>Product</th>
+                                    <th>Category</th>
+                                    <th>Stock</th>
+                                    <th>Price</th>
+                                    <th>Status</th>
+                                    <th class="text-end">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb"
+                                                class="product-img rounded me-3" alt="Smartphone" style="width: 64px; height: 64px;">
+                                            <div>
+                                                <small class="mb-0 fw-bold">Smartphone X</small>
+                                                <small class="text-muted">SKU: SPX-2023</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Electronics</td>
+                                    <td>
+                                        <div class="d-flex align-items-center gap-2">
+                                            <span>42</span>
+                                        </div>
+                                    </td>
+                                    <td>$799.99</td>
+                                    <td>
+                                        <span class="badge bg-success bg-opacity-10 text-success">In Stock</span>
+                                    </td>
+                                    <td class="text-end">
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-primary"><i
+                                                    class="bi bi-pencil"></i></button>
+                                            <button class="btn btn-outline-info"><i class="bi bi-eye"></i></button>
+                                            <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="card-footer bg-white border-0">
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center mb-0">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            </li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+
+
+            <div class="card shadow-sm">
+                <div class="card-header bg-white border-0">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Recent Activity</h5>
+                        <button class="btn btn-sm btn-link text-decoration-none">View All</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+
+                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
+                            <div class="activity-icon bg-primary bg-opacity-10 text-primary">
+                                <i class="bi bi-plus-lg"></i>
+                            </div>
+                            <div>
+                                <small class="d-block fw-semibold">New Product Added</small>
+                                <small class="text-muted">Smartphone X added to inventory</small>
+                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>2 hours
+                                    ago</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
+                            <div class="activity-icon bg-warning bg-opacity-10 text-warning">
+                                <i class="bi bi-exclamation-triangle"></i>
+                            </div>
+                            <div>
+                                <small class="d-block fw-semibold">Low Stock Alert</small>
+                                <small class="text-muted">Wireless Headphones stock below threshold</small>
+                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>5 hours
+                                    ago</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
+                            <div class="activity-icon bg-danger bg-opacity-10 text-danger">
+                                <i class="bi bi-x-circle"></i>
+                            </div>
+                            <div>
+                                <small class="d-block fw-semibold">Out of Stock</small>
+                                <small class="text-muted">Smart Watch Pro is now out of stock</small>
+                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>1 day ago</small>
+                            </div>
+                        </div>
+
+                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
+                            <div class="activity-icon bg-success bg-opacity-10 text-success">
+                                <i class="bi bi-truck"></i>
+                            </div>
+                            <div>
+                                <small class="d-block fw-semibold">Shipment Received</small>
+                                <small class="text-muted">New inventory from Tech Suppliers Inc.</small>
+                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>2 days
+                                    ago</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

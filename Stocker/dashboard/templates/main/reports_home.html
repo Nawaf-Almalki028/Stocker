@@ -1,0 +1,90 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+
+<div class="container-fluid py-4">
+
+  <div class="row g-4 mb-4">
+    <div class="col-md-3">
+      <div class="card border-primary shadow-sm h-100">
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-primary fw-bold">Total Products</h6>
+          <h3>{{ total_products }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card border-info shadow-sm h-100">
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-info fw-bold">Total Suppliers</h6>
+          <h3>{{ total_suppliers }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card border-success shadow-sm h-100">
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-success fw-bold">In Stock</h6>
+          <h3>{{ in_stock_count }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card border-warning shadow-sm h-100">
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-warning fw-bold">Low Stock</h6>
+          <h3>{{ low_stock_count }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div class="card border-danger shadow-sm h-100">
+        <div class="card-body text-center">
+          <h6 class="text-uppercase text-danger fw-bold">Out of Stock</h6>
+          <h3>{{ out_of_stock_count }}</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-white border-0">
+      <h5 class="mb-0">Expiring Soon (next 30 days)</h5>
+    </div>
+    <div class="card-body p-0">
+      {% if expiring_soon_products %}
+      <ul class="list-group list-group-flush">
+        {% for product in expiring_soon_products %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ product.name }} - Expires on {{ product.expiry_date }}
+            <span class="badge bg-warning">Expiring Soon</span>
+          </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <p class="text-muted p-3">No products expiring soon.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="card mb-4 shadow-sm">
+    <div class="card-header bg-white border-0">
+      <h5 class="mb-0">Expired Products</h5>
+    </div>
+    <div class="card-body p-0">
+      {% if expired_products %}
+      <ul class="list-group list-group-flush">
+        {% for product in expired_products %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ product.name }} - Expired on {{ product.expiry_date }}
+            <span class="badge bg-danger">Expired</span>
+          </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+        <p class="text-muted p-3">No expired products.</p>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

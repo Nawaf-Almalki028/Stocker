@@ -1,0 +1,58 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+
+<form method="post" enctype="multipart/form-data" class="p-3">
+  {% csrf_token %}
+
+  <div class="mb-3">
+    <label for="supplierName" class="form-label">Supplier Name</label>
+    <input type="text" class="form-control" id="supplierName" name="supplierName" placeholder="Enter supplier name" value="{{ supplier.name }}"
+      required>
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierEmail" class="form-label">Email</label>
+    <input type="email" class="form-control" id="supplierEmail" name="supplierEmail" placeholder="Enter email" value="{{supplier.user.email}}" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierPhone" class="form-label">Phone Number</label>
+    <input type="text" class="form-control" id="supplierPhone" name="supplierPhone" value="{{supplier.phone_number}}" placeholder="Enter phone number"
+      required>
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierWebsite" class="form-label">Website</label>
+    <input type="url" class="form-control" id="supplierWebsite" name="supplierWebsite" placeholder="Enter website URL" value="{{ supplier.website }}">
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierLogo" class="form-label">Logo</label>
+    <img src="{{supplier.logo.url}}" alt="" style="width: 128px; height: 128px;">
+    <input type="file" class="form-control" id="supplierLogo" name="supplierLogo" accept="image/*" value="{{ supplier.logo.url }}">
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierusername" class="form-label">Username</label>
+    <input type="text" class="form-control" id="supplierusername" name="supplierusername" placeholder="Enter username"
+      required value="{{ supplier.user.username }}">
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierPassword" class="form-label">Password</label>
+    <input type="password" class="form-control" id="supplierPassword" name="supplierPassword"
+      placeholder="Enter password" required>
+  </div>
+
+  <div class="mb-3">
+    <label for="supplierConfirmPassword" class="form-label">Confirm Password</label>
+    <input type="password" class="form-control" id="supplierConfirmPassword" name="supplierConfirmPassword"
+      placeholder="Confirm password" required>
+  </div>
+
+  <div class="d-flex gap-3 justify-content-end">
+    <a href="{% url 'dashboard:dashboard_supplier' %}" class="btn btn-secondary">Close</a>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </div>
+</form>
+{% endblock %}

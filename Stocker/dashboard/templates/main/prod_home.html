@@ -1,34 +1,122 @@
 {% extends 'main/base_home.html' %}
 {% block content %}
+
 <div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        {% if perms.dashboard.add_product %}
+<button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#addProductModal">
+    <i class="bi bi-plus-lg me-1"></i>Add Product
+</button>
 
+<div class="modal fade" id="addProductModal" tabindex="-1" aria-labelledby="addProductModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addProductModalLabel">Add Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
 
+                    <div class="mb-3">
+                        <label class="form-label">Image</label>
+                        <input type="file" class="form-control" name="image" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Name</label>
+                        <input type="text" class="form-control" name="name" placeholder="Enter product name" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Product Description</label>
+                        <textarea class="form-control" name="description" rows="3" placeholder="Enter description"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Category</label>
+                        <select class="form-select" name="category">
+                            <option selected disabled>Select Category</option>
+                            {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="dropdown open">
+                        <button class="btn btn-secondary dropdown-toggle w-100" type="button" id="triggerId" data-bs-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Select Suppliers
+                        </button>
+                        <div class="dropdown-menu p-3 w-100" aria-labelledby="triggerId">
+                            <div class="mb-3">
+                                <label class="form-label bg-light text-center w-100 rounded-3">Suppliers</label>
+                                {% for supplier in suppliers %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="suppliers" value="{{ supplier.id }}" id="supplier{{ supplier.id }}">
+                                    <label class="form-check-label" for="supplier{{ supplier.id }}">{{ supplier.name }}</label>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Price</label>
+                        <input type="number" step="0.01" class="form-control" name="price" placeholder="Enter price" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-control" name="quantity" placeholder="Enter quantity" />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Expiry Date</label>
+                        <input type="date" class="form-control" name="expiry_date" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+    </div>
     <div class="row g-4 mb-4">
-
         <div class="col-md-6 col-lg-4">
-            <div class="card card-stat border-primary h-100 shadow-sm">
+            <div class="card card-stat border-success h-100 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 class="text-uppercase text-muted small fw-bold">Total Products</h6>
-                            <h2 class="fw-bold mt-2 mb-0">248</h2>
-                            <p class="text-muted mb-0 small">+12% from last month</p>
+                            <h6 class="text-uppercase text-muted small fw-bold">In Stock</h6>
+                            <h2 class="fw-bold mt-2 mb-0">
+                                {{ in_stock_products }}
+                            </h2>
+                            <p class="text-muted mb-0 small">Available inventory</p>
                         </div>
-                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle align-self-center">
-                            <i class="bi bi-box-seam fs-4 text-primary"></i>
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle align-self-center">
+                            <i class="bi bi-check-circle fs-4 text-success"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
         <div class="col-md-6 col-lg-4">
             <div class="card card-stat border-warning h-100 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h6 class="text-uppercase text-muted small fw-bold">Low Stock</h6>
-                            <h2 class="fw-bold mt-2 mb-0">18</h2>
+                            <h2 class="fw-bold mt-2 mb-0">
+                                {{ low_stock_products }}
+                            </h2>
                             <p class="text-muted mb-0 small">Need restocking</p>
                         </div>
                         <div class="bg-warning bg-opacity-10 p-3 rounded-circle align-self-center">
@@ -38,14 +126,15 @@
                 </div>
             </div>
         </div>
-
         <div class="col-md-6 col-lg-4">
             <div class="card card-stat border-danger h-100 shadow-sm">
                 <div class="card-body">
                     <div class="d-flex justify-content-between">
                         <div>
                             <h6 class="text-uppercase text-muted small fw-bold">Out of Stock</h6>
-                            <h2 class="fw-bold mt-2 mb-0">7</h2>
+                            <h2 class="fw-bold mt-2 mb-0">
+                                {{ out_of_stock_products }}
+                            </h2>
                             <p class="text-muted mb-0 small">Urgent attention</p>
                         </div>
                         <div class="bg-danger bg-opacity-10 p-3 rounded-circle align-self-center">
@@ -55,27 +144,9 @@
                 </div>
             </div>
         </div>
-
-        <div class="col-md-6 col-lg-4">
-            <div class="card card-stat border-success h-100 shadow-sm">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <div>
-                            <h6 class="text-uppercase text-muted small fw-bold">Top Category</h6>
-                            <h2 class="fw-bold mt-2 mb-0">Electronics</h2>
-                            <p class="text-muted mb-0 small">42% of sales</p>
-                        </div>
-                        <div class="bg-success bg-opacity-10 p-3 rounded-circle align-self-center">
-                            <i class="bi bi-trophy fs-4 text-success"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-
     <div class="row g-4">
-        <div class="col-lg-8">
+        <div>
             <div class="card shadow-sm h-100">
                 <div class="card-header bg-white border-0">
                     <div class="d-flex justify-content-between align-items-center">
@@ -107,122 +178,92 @@
                                     <th class="text-end">Actions</th>
                                 </tr>
                             </thead>
+
+                            {% for product in products %}
                             <tbody>
                                 <tr>
                                     <td>
                                         <div class="d-flex align-items-center">
-                                            <img src="https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb"
-                                                class="product-img rounded me-3" alt="Smartphone" style="width: 64px; height: 64px;">
+                                            <img src="{{ product.image.url }}"
+                                                class="product-img rounded me-3" alt="Smartphone"
+                                                style="width: 64px; height: 64px;">
                                             <div>
-                                                <small class="mb-0 fw-bold">Smartphone X</small>
-                                                <small class="text-muted">SKU: SPX-2023</small>
+                                                <small class="mb-0 fw-bold">{{product.name}}</small>
+                                                <small class="text-muted">{{product.description}}</small>
                                             </div>
                                         </div>
                                     </td>
-                                    <td>Electronics</td>
-                                    <td>
-                                        <div class="d-flex align-items-center gap-2">
-                                            <span>42</span>
-                                        </div>
-                                    </td>
-                                    <td>$799.99</td>
+                                    <td>{{product.category}}</td>
+                                    <td>{{product.quantity}}</td>
+                                    <td>${{product.price}}</td>
+                                    {% if product.quantity > 5 %}
                                     <td>
                                         <span class="badge bg-success bg-opacity-10 text-success">In Stock</span>
                                     </td>
+                                    {% elif product.quantity <= 5 and product.quantity != 0 %}
+                                    <td>
+                                        <span class="badge bg-warning bg-opacity-10 text-warning">Low Stock</span>
+                                    </td>
+                                    {% else %}
+                                    <td>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger">Out of Stock</span>
+                                    </td>
+                                    {% endif %}
                                     <td class="text-end">
                                         <div class="btn-group btn-group-sm">
-                                            <button class="btn btn-outline-primary"><i
-                                                    class="bi bi-pencil"></i></button>
-                                            <button class="btn btn-outline-info"><i class="bi bi-eye"></i></button>
-                                            <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                            {% if perms.dashboard.change_product %}
+                                            <a href="{% url 'dashboard:dashboard_prod_edit' product.id %}" class="btn btn-outline-primary"><i
+                                                    class="bi bi-pencil"></i></a>
+                                            {% endif %}
+                                            <a href="{% url 'dashboard:dashboard_prod_view' product.id %}" class="btn btn-outline-info"><i class="bi bi-eye"></i></a>
+                                            {% if perms.dashboard.delete_product %}
+                                            <a href="{% url 'dashboard:dashboard_prod_delete' product.id %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                            {% endif %}
                                         </div>
                                     </td>
                                 </tr>
                             </tbody>
+                            {% endfor %}
                         </table>
                     </div>
                 </div>
                 <div class="card-footer bg-white border-0">
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination justify-content-center mb-0">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1">Previous</a>
-                            </li>
-                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <nav aria-label="Page navigation" class="mt-4">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
                             <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
+                                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
                             </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                            </li>
+                            {% endif %}
+
+                            {% for num in page_obj.paginator.page_range %}
+                            {% if page_obj.number == num %}
+                            <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                            </li>
+                            {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Next</span>
+                            </li>
+                            {% endif %}
                         </ul>
                     </nav>
                 </div>
             </div>
         </div>
 
-        <div class="col-lg-4">
-
-
-            <div class="card shadow-sm">
-                <div class="card-header bg-white border-0">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Recent Activity</h5>
-                        <button class="btn btn-sm btn-link text-decoration-none">View All</button>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div class="list-group list-group-flush">
-
-                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
-                            <div class="activity-icon bg-primary bg-opacity-10 text-primary">
-                                <i class="bi bi-plus-lg"></i>
-                            </div>
-                            <div>
-                                <small class="d-block fw-semibold">New Product Added</small>
-                                <small class="text-muted">Smartphone X added to inventory</small>
-                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>2 hours
-                                    ago</small>
-                            </div>
-                        </div>
-
-                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
-                            <div class="activity-icon bg-warning bg-opacity-10 text-warning">
-                                <i class="bi bi-exclamation-triangle"></i>
-                            </div>
-                            <div>
-                                <small class="d-block fw-semibold">Low Stock Alert</small>
-                                <small class="text-muted">Wireless Headphones stock below threshold</small>
-                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>5 hours
-                                    ago</small>
-                            </div>
-                        </div>
-
-                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
-                            <div class="activity-icon bg-danger bg-opacity-10 text-danger">
-                                <i class="bi bi-x-circle"></i>
-                            </div>
-                            <div>
-                                <small class="d-block fw-semibold">Out of Stock</small>
-                                <small class="text-muted">Smart Watch Pro is now out of stock</small>
-                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>1 day ago</small>
-                            </div>
-                        </div>
-
-                        <div class="list-group-item border-0 px-0 py-2 d-flex gap-3">
-                            <div class="activity-icon bg-success bg-opacity-10 text-success">
-                                <i class="bi bi-truck"></i>
-                            </div>
-                            <div>
-                                <small class="d-block fw-semibold">Shipment Received</small>
-                                <small class="text-muted">New inventory from Tech Suppliers Inc.</small>
-                                <small class="d-block text-muted mt-1"><i class="bi bi-clock me-1"></i>2 days
-                                    ago</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 </div>
+
 {% endblock %}

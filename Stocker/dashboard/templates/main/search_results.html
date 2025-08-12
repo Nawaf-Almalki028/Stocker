@@ -1,0 +1,106 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+
+<h3 class="mt-4">Search Results for <span class="text-primary">"{{ query }}"</span></h3>
+<div class="container py-4">
+
+    <section class="mb-5">
+        <h5 class="mb-3 border-bottom pb-2">Categories</h5>
+        {% if categories %}
+        <div class="row g-3">
+            {% for category in categories %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title fw-bold">{{ category.name }}</h6>
+                        <p class="text-muted small mt-auto">{{ category.description }}</p>
+                        {% if perms.dashboard.change_category %}
+                        <a href="{% url 'dashboard:dashboard_categ_edit' category.id %}" class="btn btn-sm btn-outline-primary mt-2">Edit Category</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted fst-italic">No categories found.</p>
+        {% endif %}
+    </section>
+
+    <section class="mb-5">
+        <h5 class="mb-3 border-bottom pb-2">Products</h5>
+        {% if products %}
+        <div class="row g-3">
+            {% for product in products %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="row g-0 align-items-center">
+                        <div class="col-4">
+                            {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="m-1 img-fluid rounded-start" style="object-fit: cover; height: 100%;">
+                            {% else %}
+                            <div class="bg-secondary bg-opacity-25 d-flex justify-content-center align-items-center rounded-start" style="height: 100%;">
+                                <i class="bi bi-box-seam fs-1 text-muted"></i>
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-8">
+                            <div class="card-body p-3 d-flex flex-column h-100">
+                                <h6 class="card-title fw-bold mb-1">{{ product.name }}</h6>
+                                <p class="card-text text-truncate mb-1" style="max-height: 3em; overflow: hidden;">{{ product.description|default:"No description" }}</p>
+                                <p class="mb-1"><strong>Category:</strong> {{ product.category.name }}</p>
+                                <p class="mb-1"><strong>Quantity:</strong> {{ product.quantity }}</p>
+                                <p class="mb-1"><strong>Price:</strong> ${{ product.price }}</p>
+
+                                {% if product.quantity > 5 %}
+                                <span class="badge bg-success mt-auto align-self-start">In Stock</span>
+                                {% elif product.quantity > 0 %}
+                                <span class="badge bg-warning text-dark mt-auto align-self-start">Low Stock</span>
+                                {% else %}
+                                <span class="badge bg-danger mt-auto align-self-start">Out of Stock</span>
+                                {% endif %}
+
+                                <a href="{% url 'dashboard:dashboard_prod_view' product.id %}" class="btn btn-sm btn-outline-info mt-3">View Details</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted fst-italic">No products found.</p>
+        {% endif %}
+    </section>
+
+    <section>
+        <h5 class="mb-3 border-bottom pb-2">Suppliers</h5>
+        {% if suppliers %}
+        <div class="row g-3">
+            {% for supplier in suppliers %}
+            <div class="col-md-4 col-lg-3">
+                <div class="card h-100 shadow-sm text-center">
+                    <div class="card-body d-flex flex-column justify-content-center">
+                        {% if supplier.logo %}
+                        <img src="{{ supplier.logo.url }}" alt="{{ supplier.name }}" class="rounded-circle mb-3 mx-auto" style="width: 80px; height: 80px; object-fit: cover;">
+                        {% else %}
+                        <div class="bg-secondary bg-opacity-25 rounded-circle mb-3 mx-auto d-flex justify-content-center align-items-center" style="width: 80px; height: 80px;">
+                            <i class="bi bi-building fs-1 text-muted"></i>
+                        </div>
+                        {% endif %}
+                        <h6 class="card-title fw-bold">{{ supplier.name }}</h6>
+                        <p class="mb-1 small text-truncate">{{ supplier.email|default:"No email" }}</p>
+                        <p class="mb-1 small text-truncate">{{ supplier.phone|default:"No phone" }}</p>
+                        <a href="{% url 'dashboard:dashboard_supplier_view' supplier.id %}" class="btn btn-sm btn-outline-primary mt-2">View Supplier</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted fst-italic">No suppliers found.</p>
+        {% endif %}
+    </section>
+
+</div>
+{% endblock %}

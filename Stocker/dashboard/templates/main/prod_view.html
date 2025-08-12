@@ -1,0 +1,74 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-md-6 d-flex align-items-center justify-content-center bg-white border rounded-3 shadow-sm">
+      <img src="{{ product.image.url }}" class="w-50" alt="Product Image">
+    </div>
+    <div class="col-md-6">
+      <h2 class="mb-4">Product Details</h2>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">{{ product.name }}</h5>
+          <p class="card-text">{{ product.description }}</p>
+          <p class="card-text"><strong>Category:</strong> {{ product.category.name }}</p>
+          <p class="card-text"><strong>Price:</strong> ${{ product.price }}</p>
+          <p class="card-text"><strong>Quantity:</strong> {{ product.quantity }}</p>
+          <p class="card-text"><strong>Expiry Date:</strong> {{ product.expiry_date|default:"N/A" }}</p>
+          <div class="d-flex justify-content-end">
+            {% if perms.dashboard.change_product %}
+            <a href="{% url 'dashboard:dashboard_prod_edit' product.id %}" class="btn btn-primary me-2">Edit</a>
+            {% endif %}
+            <form method="POST" action="{% url 'dashboard:dashboard_prod_delete' product.id %}"
+              onsubmit="return confirm('Are you sure you want to delete this product?');">
+              {% csrf_token %}
+              {% if perms.dashboard.delete_product %}
+              <button type="submit" class="btn btn-danger">Delete</button>
+              {% endif %}
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-4 shadow-sm bg-white border p-3">
+      <p class="card-text"><strong>Suppliers:</strong></p>
+      {% if product.suppliers.all %}
+      <div class="table-responsive">
+        <table class="table align-items-center">
+          <thead>
+            <tr>
+              <th scope="col">Supplier Logo</th>
+              <th scope="col">Supplier Name</th>
+              <th scope="col">Supplier Email</th>
+              <th scope="col">Supplier Phone Number</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for supplier in product.suppliers.all %}
+            <tr>
+              <td>
+                {% if supplier.logo %}
+                <img src="{{ supplier.logo.url }}" alt="{{ supplier.name }} Logo" style="width: 64px; height: 64px; object-fit: cover; border-radius: 8px;">
+                {% else %}
+                <span class="text-muted">No Logo</span>
+                {% endif %}
+              </td>
+              <td>{{ supplier.name }}</td>
+              <td>{{ supplier.user.email }}</td>
+              <td>{{ supplier.phone_number }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <p class="text-muted">No suppliers assigned to this product.</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

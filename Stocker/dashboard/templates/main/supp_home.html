@@ -1,0 +1,210 @@
+{% extends 'main/base_home.html' %}
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        {% if perms.dashboard.add_supplier %}
+        <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#modalId">
+            <i class="bi bi-plus-lg me-1"></i> Add Supplier
+        </button>
+        <div class="modal fade" id="modalId" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+            role="dialog" aria-labelledby="modalTitleId" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-sm" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitleId">
+                            Add New Supplier
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" enctype="multipart/form-data" class="p-3">
+                            {% csrf_token %}
+
+                            <div class="mb-3">
+                                <label for="supplierName" class="form-label">Supplier Name</label>
+                                <input type="text" class="form-control" id="supplierName" name="supplierName"
+                                    placeholder="Enter supplier name" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="supplierEmail" name="supplierEmail"
+                                    placeholder="Enter email" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierPhone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="supplierPhone" name="supplierPhone"
+                                    placeholder="Enter phone number" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierWebsite" class="form-label">Website</label>
+                                <input type="url" class="form-control" id="supplierWebsite" name="supplierWebsite"
+                                    placeholder="Enter website URL">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierLogo" class="form-label">Logo</label>
+                                <input type="file" class="form-control" id="supplierLogo" name="supplierLogo"
+                                    accept="image/*">
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierusername" class="form-label">Username</label>
+                                <input type="text" class="form-control" id="supplierusername" name="supplierusername"
+                                    placeholder="Enter username" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierPassword" class="form-label">Password</label>
+                                <input type="password" class="form-control" id="supplierPassword"
+                                    name="supplierPassword" placeholder="Enter password" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="supplierConfirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="supplierConfirmPassword"
+                                    name="supplierConfirmPassword" placeholder="Confirm password" required>
+                            </div>
+
+                            <div class="d-flex gap-3 justify-content-end">
+                                <a href="{% url 'dashboard:dashboard_supplier' %}" class="btn btn-secondary">Close</a>
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                        </form>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {% endif %}
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card stat-card border-primary h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold">Total Suppliers</h6>
+                            <h3 class="fw-bold mb-0">
+                                {{ total_suppliers }}
+                            </h3>
+                        </div>
+                        <div class="bg-primary bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-people-fill fs-4 text-primary"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card stat-card border-success h-100 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted small fw-bold">Total Products</h6>
+                            <h3 class="fw-bold mb-0">
+                                {{ total_products }}
+                            </h3>
+                        </div>
+                        <div class="bg-success bg-opacity-10 p-3 rounded-circle">
+                            <i class="bi bi-box-seam fs-4 text-success"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-white border-0">
+            <h5 class="mb-0">Suppliers List</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Supplier</th>
+                            <th>Contact</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for supplier in suppliers %}
+
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{supplier.logo.url}}" class="supplier-logo me-3"
+                                        alt="Tech Supply" style="width:40px; height:40px;">
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">{{supplier.user.first_name}} {{supplier.user.last_name}}</h6>
+                                        <small class="text-muted">{{supplier.user.username}}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <small class="d-block">{{supplier.phone_number}}</small>
+                                <small class="text-muted">{{supplier.user.email}}</small>
+                            </td>
+                            <td>
+                                <span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                            </td>
+                            <td class="text-end">
+                                <div class="btn-group btn-group-sm">
+                                    {% if perms.dashboard.change_supplier %}
+                                    <a href="{% url 'dashboard:dashboard_supplier_edit' supplier.id %}" class="btn btn-outline-primary"><i class="bi bi-pencil"></i></a>
+                                    {% endif %}
+                                    <a href="{% url 'dashboard:dashboard_supplier_view' supplier.id %}" class="btn btn-outline-info"><i class="bi bi-eye"></i></a>
+                                    {% if perms.dashboard.delete_supplier %}
+                                    <a href="{% url 'dashboard:dashboard_supplier_delete' supplier.id %}" class="btn btn-outline-danger"><i class="bi bi-trash"></i></a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation" class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Previous</span>
+                        </li>
+                        {% endif %}
+                
+                        {% for num in page_obj.paginator.page_range %}
+                        {% if page_obj.number == num %}
+                        <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                        <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+                        {% endif %}
+                        {% endfor %}
+                
+                        {% if page_obj.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <span class="page-link">Next</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

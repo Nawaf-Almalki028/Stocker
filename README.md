@@ -132,6 +132,17 @@ As an Inventory Manager, I want to export inventory data to CSV files so that I 
 - Normal user can view/update stock, view/add/update product. But cannot delete product. Cannot add/update/delete categories/suppliers.
 - Admin has all the permissions. Can view/add/update/delete products, categories, suppliers. 
 
+## Users
+
+Username: admin
+Password: admin
+
+=================
+
+Username: worker
+Password: 11223344!
+
+=================
 
 ## To be provided by you
 - UML link here.
